@@ -46,6 +46,21 @@ public class URLShortenerService
         return modelMapper.map(urlEntity,ShortenUrlResponseDto.class);
     }
 
+    public ShortenUrlResponseDto retrieveUrl(String shortcode)
+    {
+        URLEntity urlEntity = urlRepo.findByshortcode(shortcode);
+        if(urlEntity!=null)
+        {
+            urlEntity.setAccessCount(urlEntity.getAccessCount()+1);
+            urlRepo.save(urlEntity);
+            return modelMapper.map(urlEntity,ShortenUrlResponseDto.class);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private static String generateRandom() {
         String aToZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         Random rand=new Random();
