@@ -9,7 +9,7 @@ Provide the transformed short URL from a Long URL
 ## Installation and Running
 
 1. Clone the repository
-2. Create a Database in MYSQL using "CREATE SCHEMA `urlshorteneru` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci; "
+2. Create a Database in MYSQL using "CREATE SCHEMA `urlshortener` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci; "
 3. Run in Intellij
 
 Exposed API's
