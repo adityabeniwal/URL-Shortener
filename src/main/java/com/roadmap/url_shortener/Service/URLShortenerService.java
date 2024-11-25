@@ -1,8 +1,7 @@
 package com.roadmap.url_shortener.Service;
 
 
-import com.roadmap.url_shortener.Dto.ShortenUrlRequestDto;
-import com.roadmap.url_shortener.Dto.ShortenUrlResponseDto;
+import com.roadmap.url_shortener.Dto.*;
 import com.roadmap.url_shortener.Model.URLEntity;
 import com.roadmap.url_shortener.Model.URLrepo;
 import org.modelmapper.ModelMapper;
@@ -61,6 +60,51 @@ public class URLShortenerService
         }
     }
 
+    public UpdateUrlResponseDto updateUrl (String shortcode, UpdateUrlRequestDto updateUrlRequestDto)
+    {
+        URLEntity urlEntity = urlRepo.findByshortcode(shortcode);
+        if(urlEntity!=null)
+        {
+            urlEntity.setUrl(updateUrlRequestDto.getUrl());
+            urlEntity.setUpdatedAt(LocalDateTime.now());
+            urlRepo.save(urlEntity);
+            return modelMapper.map(urlEntity,UpdateUrlResponseDto.class);
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    public boolean deleteUrl (String shortcode)
+    {
+
+        URLEntity urlEntity = urlRepo.findByshortcode(shortcode);
+        if(urlEntity!=null)
+        {
+            urlRepo.delete(urlEntity);
+           return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public StatsResponseDto getStats(String shortcode)
+    {
+        URLEntity urlEntity = urlRepo.findByshortcode(shortcode);
+        if(urlEntity!=null)
+        {
+            return modelMapper.map(urlEntity,StatsResponseDto.class);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private static String generateRandom() {
         String aToZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         Random rand=new Random();
@@ -71,5 +115,7 @@ public class URLShortenerService
         }
         return res.toString();
     }
+
+
 
 }

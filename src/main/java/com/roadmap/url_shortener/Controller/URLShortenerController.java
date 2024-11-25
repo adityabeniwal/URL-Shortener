@@ -1,8 +1,7 @@
 package com.roadmap.url_shortener.Controller;
 
 
-import com.roadmap.url_shortener.Dto.ShortenUrlRequestDto;
-import com.roadmap.url_shortener.Dto.ShortenUrlResponseDto;
+import com.roadmap.url_shortener.Dto.*;
 import com.roadmap.url_shortener.Service.URLShortenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +37,46 @@ public class URLShortenerController
             return ResponseEntity.status(HttpStatus.OK).body(shortenUrlResponseDto);
         }
         else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping("{shortcode}")
+    public ResponseEntity<UpdateUrlResponseDto> updateUrl (@PathVariable String shortcode, @RequestBody UpdateUrlRequestDto updateUrlRequestDto)
+    {
+        UpdateUrlResponseDto updateUrlResponseDto = urlShortenerService.updateUrl(shortcode,updateUrlRequestDto);
+        if (updateUrlRequestDto!=null)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(updateUrlResponseDto);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @DeleteMapping("{shortcode}")
+    public ResponseEntity<String> deleteUrl (@PathVariable String shortcode)
+    {
+        if(urlShortenerService.deleteUrl(shortcode))
+        {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("");
+        }
+        else
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        }
+    }
+
+    @GetMapping("{shortcode}/stats")
+    public ResponseEntity<StatsResponseDto> getStats(@PathVariable String shortcode)
+    {
+        StatsResponseDto statsResponseDto = urlShortenerService.getStats(shortcode);
+        if (statsResponseDto!=null)
+        {
+            return ResponseEntity.status(HttpStatus.OK).body(statsResponseDto);
+        }
+        else
+        {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
